@@ -39,10 +39,17 @@ namespace CRC
             crcMessage = new StringBuilder(stringMessage.Substring(0, stringMessage.Length - crc.Length));
             crcMessage.Append(crc.ToString());
             Console.WriteLine("Message with CRC: " + crcMessage);
-            if (crcMessage[0] == '0')
-                crcMessage[0] = '1';
-            else
-                crcMessage[0] = '0'; //Если изменить основное сообщение результат должен получится ненулевым
+
+            Random rnd = new();
+            int randomNum = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                randomNum = rnd.Next(1, crcMessage.Length - crc.Length);
+                if (crcMessage[randomNum] == '0')
+                    crcMessage[randomNum] = '1';
+                else
+                    crcMessage[randomNum] = '0';
+            }
 
             string result = CRCCustom.ExecuteCRC(crcMessage.ToString(), stringPolynomial);// Вычисление заново для обнаружения ошибки
 
